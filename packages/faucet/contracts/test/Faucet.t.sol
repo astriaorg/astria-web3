@@ -58,10 +58,32 @@ contract FaucetTest is Test {
         assertEq(token.balanceOf(address(faucet)), 50 ether);
 
         // Request tokens as dev
-        vm.prank(dev);
+        vm.startPrank(dev);
         faucet.requestTokens();
-
         assertEq(token.balanceOf(dev), faucet.tokenAmount());
         assertEq(token.balanceOf(address(faucet)), 40 ether);
+
+        // Can't request again immediately
+        vm.expectRevert("You have to wait 30 minutes from your last withdrawal before you can withdraw again.");
+        faucet.requestTokens();
+        vm.stopPrank();
+    }
+
+    function testEmergencyWithdrawal() public {
+        // Top up faucet
+        vm.startPrank(owner);
+        token.approve(address(faucet), 50 ether);
+        faucet.topUpTokens(50 ether);
+        vm.stopPrank();
+
+        assertEq(token.balanceOf(address(faucet)), 50 ether);
+
+        // Withdraw all tokens
+        vm.startPrank(owner);
+        faucet.emergencyWithdraw();
+        vm.stopPrank();
+
+        assertEq(token.balanceOf(address(faucet)), 0);
+        assertEq(token.balanceOf(owner), 100 ether);
     }
 }
