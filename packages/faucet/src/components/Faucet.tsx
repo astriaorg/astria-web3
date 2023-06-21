@@ -35,9 +35,6 @@ export function Faucet() {
 
   return (
     <div>
-      <h1>Faucet</h1>
-      <p>This is a faucet. It will give you some tokens to play with on the testnet.</p>
-
       <button disabled={!write || isLoading} onClick={() => write && write()}>
         {isLoading ? 'Dispensing tokens' : 'Request tokens'}
       </button>

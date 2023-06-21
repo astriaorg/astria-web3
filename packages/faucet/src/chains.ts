@@ -6,8 +6,8 @@ export const astria = {
   network: 'astria',
   nativeCurrency: {
     decimals: 18,
-    name: 'Ethereum',
-    symbol: 'ETH',
+    name: 'Astria',
+    symbol: 'RIA',
   },
   rpcUrls: {
     public: { http: ['http://executor.astria.localdev.me'] },
