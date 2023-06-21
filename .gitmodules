@@ -1,0 +1,3 @@
+[submodule "packages/faucet/contracts/lib/openzeppelin-contracts"]
+	path = packages/faucet/contracts/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
