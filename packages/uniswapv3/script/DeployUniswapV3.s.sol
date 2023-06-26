@@ -22,7 +22,7 @@ import {Script} from "forge-std/Script.sol";
 contract DeployUniswapV3 is Script {
     // Config
     address private weth9Address = address(vm.envAddress("WETH9_ADDRESS"));
-    bytes32 private nativeCurrencyLabelBytes = keccak256(abi.encodePacked("ETH"));
+    bytes32 private nativeCurrencyLabelBytes = keccak256(abi.encodePacked("RIA"));
     // NOTE - we're not actually running v2 uniswap so this is just a dummy address
     address private v2CoreFactoryAddress = address(0x1339);
 
