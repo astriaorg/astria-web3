@@ -2,5 +2,15 @@
 src = "src"
 out = "out"
 libs = ["lib"]
+remappings = [
+    'base64-sol=node_modules/base64-sol/',
+    '@openzeppelin/=lib/openzeppelin-contracts-v341/',
+    '@uniswap/lib=lib/solidity-lib/',
+    '@uniswap/swap-router-contracts/=lib/swap-router-contracts/',
+    '@uniswap/v2-core/=lib/v2-core/',
+    '@uniswap/v3-core/=lib/v3-core/',
+    '@uniswap/v3-periphery/=lib/v3-periphery/',
+    '@uniswap/v3-staker/=lib/v3-staker/',
+  ]
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
