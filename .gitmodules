@@ -28,6 +28,7 @@
 [submodule "packages/uniswapv3/lib/openzeppelin-contracts-v341"]
 	path = packages/uniswapv3/lib/openzeppelin-contracts-v341
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+	branch = release-v3.4
 [submodule "packages/uniswapv3/lib/solidity-lib"]
 	path = packages/uniswapv3/lib/solidity-lib
 	url = https://github.com/uniswap/solidity-lib
