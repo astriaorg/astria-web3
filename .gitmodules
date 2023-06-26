@@ -16,3 +16,6 @@
 [submodule "packages/uniswapv3/lib/v3-periphery"]
 	path = packages/uniswapv3/lib/v3-periphery
 	url = https://github.com/uniswap/v3-periphery
+[submodule "packages/uniswapv3/lib/v3-staker"]
+	path = packages/uniswapv3/lib/v3-staker
+	url = https://github.com/uniswap/v3-staker
