@@ -9,6 +9,9 @@ This repository contains smart contracts and front end interfaces for the Astria
     * Foundry + Forge - https://book.getfoundry.sh/getting-started/installation
 
 ```bash
+# clone repo while also cloning submodules
+git clone --recurse-submodules git@github.com:astriaorg/astria-web3.git
+
 # install dependencies
 npm install -g dotenv-cli
 curl -L https://foundry.paradigm.xyz | bash
@@ -20,7 +23,7 @@ dotenv -- bash -c 'RUST_LOG=debug forge create \
   --private-key $PRIVATE_KEY \
   --rpc-url $JSON_RPC \
   src/Weth9.sol:WETH9'
-  
+
 # deploy uniswap v3
 cd packages/uniswapv3
 # NOTE - must get Weth9 address from previous step
