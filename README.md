@@ -47,3 +47,10 @@ dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployUniswapV3.s.sol:Depl
   --slow \
   --broadcast --skip-simulation -vvvvv'
 ```
+
+### Running Forge Tests
+
+```bash
+cd packages/evm-test-data
+forge test
+```

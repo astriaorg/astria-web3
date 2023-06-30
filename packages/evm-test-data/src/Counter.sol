@@ -6,7 +6,7 @@ import "forge-std/Test.sol";
 contract Counter is Test {
     uint256 public number;
 
-    function setup() public {
+    function setUp() public {
         number = 10;
     }
 
