@@ -46,6 +46,17 @@ dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployUniswapV3.s.sol:Depl
   --chain-id 912559 \
   --slow \
   --broadcast --skip-simulation -vvvvv'
+
+# evm test data scripts
+cd packages/evm-test-data
+cp .env.example .env
+dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployDeployAndCallERC20.sol:DeployAndCallERC20 \
+  --optimizer-runs 2 \
+  --private-key $PRIVATE_KEY \
+  --rpc-url $JSON_RPC \
+  --chain-id 912559 \
+  --slow \
+  --broadcast --skip-simulation -vvvvv'
 ```
 
 ### Running Forge Tests
