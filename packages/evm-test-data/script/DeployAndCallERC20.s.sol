@@ -8,6 +8,7 @@ import "../src/SolmateERC20.sol";
 contract DeployAndCallERC20 is Script {
     uint256 private constant _QUANTITY_TO_MINT = 100 ether;
     uint256 private constant _QUANTITY_TO_TRANSFER = 1 ether;
+    string private constant _MNEMONIC = "test test test test test test test test test test test junk";
 
     function run() public {
         // load loopCount from environment
@@ -24,9 +25,8 @@ contract DeployAndCallERC20 is Script {
         address payable[] memory addressArray = new address payable[](
             addressCount
         );
-        string memory mnemonic = "test test test test test test test test test test test junk";
         for (uint256 i = 0; i < addressCount; i++) {
-            (address addr, ) = deriveRememberKey(mnemonic, uint32(i));
+            (address addr, ) = deriveRememberKey(_MNEMONIC, uint32(i));
             addressArray[i] = payable(addr);
         }
 
