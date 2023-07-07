@@ -24,9 +24,8 @@ contract DeployAndCallERC20 is Script {
         address payable[] memory addressArray = new address payable[](
             addressCount
         );
+        string memory mnemonic = "test test test test test test test test test test test junk";
         for (uint256 i = 0; i < addressCount; i++) {
-            string
-                memory mnemonic = "test test test test test test test test test test test junk";
             (address addr, ) = deriveRememberKey(mnemonic, uint32(i));
             addressArray[i] = payable(addr);
         }
