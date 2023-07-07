@@ -5,7 +5,8 @@ This repository contains smart contracts and front end interfaces for the Astria
 ### Rough-draft how to
 
 * Dependencies
-    * dotenv - https://crates.io/crates/dotenv
+    * npm
+    * dotenv - `npm install -g dotenv-cli`
     * Foundry + Forge - https://book.getfoundry.sh/getting-started/installation
 
 ```bash
@@ -37,4 +38,22 @@ dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployUniswapV3.s.sol:Depl
   --chain-id 912559 \
   --slow \
   --broadcast --skip-simulation -vvvvv'
+
+# evm data scripts
+cd packages/evm-test-data
+cp .env.example .env
+dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployAndCallERC20.s.sol:DeployAndCallERC20 \
+  --optimizer-runs 2 \
+  --private-key $PRIVATE_KEY \
+  --rpc-url $JSON_RPC \
+  --chain-id 912559 \
+  --slow \
+  --broadcast --skip-simulation -vvvvv'
+```
+
+### Running Forge Tests
+
+```bash
+cd packages/evm-test-data
+forge test
 ```
