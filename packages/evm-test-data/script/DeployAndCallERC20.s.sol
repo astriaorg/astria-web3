@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.17;
 
-import "../lib/forge-std/src/Script.sol";
+import {Script} from "forge-std/Script.sol";
 import "../src/SolmateERC20.sol";
 
 contract DeployAndCallERC20 is Script {
@@ -18,12 +18,14 @@ contract DeployAndCallERC20 is Script {
         uint256 addressCount = uint256(envAddressCount);
 
         // dynamically create address array
-        address[] memory addressArray = new address[](addressCount);
+        address payable[] memory addressArray = new address payable[](addressCount);
         for (uint256 i = 0; i < addressCount; i++) {
-            addressArray[i] = address(uint160(12 + i));
+            string memory mnemonic = "test test test test test test test test test test test junk";
+            (address addr,) = deriveRememberKey(mnemonic, uint32(i));
+            addressArray[i] = payable(addr);
         }
 
-        uint256 quantity = 100_000_000_000_000_000_000; // 100 ETH?
+        uint256 quantity = 100 ether;
 
         vm.startBroadcast();
         SolmateERC20 token = new SolmateERC20();
@@ -32,24 +34,20 @@ contract DeployAndCallERC20 is Script {
         for (uint256 i = 0; i < loopCount; i++) {
             token.mint(addressArray[i % addressCount], quantity);
         }
+        vm.stopBroadcast();
 
         // transfer tokens between addresses
-        uint256 amount = 1; // 0.000001 ETH?
+        uint256 amount = 1 ether;
         for (uint256 i = 0; i < loopCount; i++) {
-            require(
-                token.allowance(
-                    address(this),
-                    addressArray[i % addressCount]
-                ) >= amount,
-                "Transfer amount exceeds allowance"
-            );
+            vm.startBroadcast(addressArray[i % addressCount]);
+            token.approve(addressArray[i % addressCount], amount);
             token.transferFrom(
                 addressArray[i % addressCount],
                 addressArray[(i + 1) % addressCount],
                 amount
             );
+            vm.stopBroadcast();
         }
 
-        vm.stopBroadcast();
     }
 }

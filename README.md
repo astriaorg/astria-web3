@@ -50,7 +50,7 @@ dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployUniswapV3.s.sol:Depl
 # evm data scripts
 cd packages/evm-test-data
 cp .env.example .env
-dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployDeployAndCallERC20.sol:DeployAndCallERC20 \
+dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployDeployAndCallERC20.s.sol:DeployAndCallERC20 \
   --optimizer-runs 2 \
   --private-key $PRIVATE_KEY \
   --rpc-url $JSON_RPC \
