@@ -47,7 +47,7 @@ dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployUniswapV3.s.sol:Depl
   --slow \
   --broadcast --skip-simulation -vvvvv'
 
-# evm test data scripts
+# evm data scripts
 cd packages/evm-test-data
 cp .env.example .env
 dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployDeployAndCallERC20.sol:DeployAndCallERC20 \
