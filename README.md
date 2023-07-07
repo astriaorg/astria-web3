@@ -25,14 +25,6 @@ dotenv -- bash -c 'RUST_LOG=debug forge create \
   --rpc-url $JSON_RPC \
   src/Weth9.sol:WETH9'
 
-# deploy test token
-cd packages/evm-test-data
-cp .env.example .env
-dotenv -- bash -c 'RUST_LOG=debug forge create \
-  --private-key $PRIVATE_KEY \
-  --rpc-url $JSON_RPC \
-  src/SteezeToken.sol:SteezeToken'
-
 # deploy uniswap v3
 cd packages/uniswapv3
 # NOTE - must get Weth9 address from previous step
