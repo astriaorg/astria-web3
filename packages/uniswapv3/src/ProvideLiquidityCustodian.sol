@@ -2,6 +2,7 @@
 pragma solidity =0.7.6;
 pragma abicoder v2;
 
+import "forge-std/console.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {INonfungiblePositionManager} from "@uniswap/v3-periphery/contracts/interfaces/INonfungiblePositionManager.sol";
 
@@ -42,9 +43,11 @@ contract ProvideLiquidityCustodian is IERC721Receiver {
         uint amount0ToAdd,
         uint amount1ToAdd
     ) external returns (uint tokenId, uint128 liquidity, uint amount0, uint amount1) {
+        console.log("mintNewPosition transfer");
         token0.transferFrom(msg.sender, address(this), amount0ToAdd);
         token1.transferFrom(msg.sender, address(this), amount1ToAdd);
 
+        console.log("mintNewPosition approval");
         token0.approve(address(nonfungiblePositionManager), amount0ToAdd);
         token1.approve(address(nonfungiblePositionManager), amount1ToAdd);
 
