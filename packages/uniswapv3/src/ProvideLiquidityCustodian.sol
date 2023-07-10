@@ -25,9 +25,9 @@ contract ProvideLiquidityCustodian is IERC721Receiver {
 
     INonfungiblePositionManager public nonfungiblePositionManager = INonfungiblePositionManager(0xe674f04F5B5Cb6f5C25Ab490b405546A2722551a);
 
-    constructor(IERC20 token0, IERC20 token1) {
-        token0 = IERC20(token0);
-        token1 = IERC20(token1);
+    constructor(IERC20 _token0, IERC20 _token1) public {
+        token0 = IERC20(_token0);
+        token1 = IERC20(_token1);
     }
 
     function onERC721Received(
