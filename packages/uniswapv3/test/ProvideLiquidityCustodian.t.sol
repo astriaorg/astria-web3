@@ -39,10 +39,6 @@ contract UniswapV3LiquidityTest is Test {
         uint burgerAmount = 1e18;
 
         vm.startPrank(steeze_whale);
-        uint256 steeze_balance = steeze.balanceOf(steeze_whale);
-        uint256 burger_balance = burger.balanceOf(steeze_whale);
-        console.log("steeze balance %s", steeze_balance);
-        console.log("burger balance %s", burger_balance);
 
         (uint tokenId, uint128 liquidityDelta, uint amount0, uint amount1) = uni
             .mintNewPosition(steezeAmount, burgerAmount);

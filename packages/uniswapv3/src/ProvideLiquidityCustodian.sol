@@ -23,7 +23,7 @@ contract ProvideLiquidityCustodian is IERC721Receiver {
     int24 private constant MAX_TICK = - MIN_TICK;
     int24 private constant TICK_SPACING = 60;
 
-    INonfungiblePositionManager public nonfungiblePositionManager = INonfungiblePositionManager(0xe674f04F5B5Cb6f5C25Ab490b405546A2722551a);
+    INonfungiblePositionManager public nonfungiblePositionManager = INonfungiblePositionManager(0x66C714B1Cb587a5D03Cd2C82249633df0Ff3CC39);
 
     constructor(IERC20 _token0, IERC20 _token1) public {
         token0 = IERC20(_token0);
@@ -43,11 +43,9 @@ contract ProvideLiquidityCustodian is IERC721Receiver {
         uint amount0ToAdd,
         uint amount1ToAdd
     ) external returns (uint tokenId, uint128 liquidity, uint amount0, uint amount1) {
-        console.log("mintNewPosition transfer");
         token0.transferFrom(msg.sender, address(this), amount0ToAdd);
         token1.transferFrom(msg.sender, address(this), amount1ToAdd);
 
-        console.log("mintNewPosition approval");
         token0.approve(address(nonfungiblePositionManager), amount0ToAdd);
         token1.approve(address(nonfungiblePositionManager), amount1ToAdd);
 
@@ -66,6 +64,7 @@ contract ProvideLiquidityCustodian is IERC721Receiver {
             deadline: block.timestamp
         });
 
+        console.log("mintNewPosition mint");
         (tokenId, liquidity, amount0, amount1) = nonfungiblePositionManager.mint(
             params
         );
