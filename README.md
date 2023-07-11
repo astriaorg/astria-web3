@@ -2,8 +2,6 @@
 
 This repository contains smart contracts and front end interfaces for the Astria Shared Sequencer.
 
-## Installation
-
 Make sure you have the following installed:
 
   * npm
@@ -22,8 +20,6 @@ cd astria-web3
 npm install -g dotenv-cli
 curl -L https://foundry.paradigm.xyz | bash
 ```
-
-## Deployment
 
 For local dev, make sure the [Astria Dev Cluster](https://github.com/astriaorg/dev-cluster) is running.
 Then deploy contracts in the following order:
@@ -46,15 +42,17 @@ Deployed to: 0xA53639fB5458e65E4fA917FF951C390292C24A15
 Transaction hash: 0x775c63649c25d7b8029e2e786e001fcda1618723a305c2e384d5cae453a32ad7
 ```
 
-Copy the `Deployed to:` address to use for the next step.
+Copy the `Deployed to:` address to use for deploying Uniswap.
 ### Uniswap V3
+
+Before deploying Uniswap, make sure that you have ran the `weth9` steps above.
 
 ```bash
 cd packages/uniswapv3
 cp .env.example .env
 ```
 
-Open the `.env` file and replace the `WETH9_ADDRESS=` with the address from the previous step.
+Open the `.env` file and replace the `WETH9_ADDRESS=` with the address from the `weth9` "Deployed to:" output.
 Install the `base64` contract.
 
 ```bash
