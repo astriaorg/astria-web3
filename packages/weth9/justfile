@@ -7,7 +7,7 @@ set fallback
 export RUST_LOG := "debug"
 
 deploy-weth9:
-  forge create \                                                                                                                                [2:18:10]
+  forge create \
     --private-key $PRIVATE_KEY \
     --rpc-url $JSON_RPC \
     --chain-id $CHAIN_ID \
