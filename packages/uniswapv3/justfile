@@ -1,0 +1,32 @@
+default:
+  @just --list
+
+set dotenv-load
+
+export RUST_LOG := "debug"
+
+deploy-uniswapv3:
+  forge script script/DeployUniswapv3.s.sol:DeployUniswapV3 \
+    --optimizer-runs 2 \
+    --rpc-url $JSON_RPC \
+    --private-key $PRIVATE_KEY \
+    --chain-id $CHAIN_ID \
+    --slow \
+    --skip-simulation -vvvvv --broadcast |& tee deploy-uniswap-$(date +"%m_%d_%Y").log
+
+defaultTotalSupply := "100000"
+deploy-erc20 tokenName shortTokenName totalSupply=defaultTotalSupply:
+  forge create \
+    --private-key $PRIVATE_KEY \
+    --rpc-url $JSON_RPC \
+    --chain-id $CHAIN_ID \
+    src/GenericERC20.sol:GenericERC20 \
+    --constructor-args "{{tokenName}}" "{{shortTokenName}}" {{totalSupply}}
+
+deploy-provide-liquidity-custodian:
+  forge create \
+    --private-key $PRIVATE_KEY \
+    --rpc-url $JSON_RPC \
+    --chain-id $CHAIN_ID \
+    src/ProvideLiquidityCustodian.sol:ProvideLiquidityCustodian \
+    --constructor-args $NONFUNGIBLE_POSITION_MANAGER_ADDRESS $FIRST_TOKEN_ADDRESS $SECOND_TOKEN_ADDRESS

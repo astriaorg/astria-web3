@@ -4,7 +4,9 @@ pragma abicoder v2;
 
 import "forge-std/console.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {TickMath} from "@uniswap/v3-core/contracts/libraries/TickMath.sol";
 import {INonfungiblePositionManager} from "@uniswap/v3-periphery/contracts/interfaces/INonfungiblePositionManager.sol";
+import {NonfungiblePositionManager} from "@uniswap/v3-periphery/contracts/NonfungiblePositionManager.sol";
 
 interface IERC721Receiver {
     function onERC721Received(
@@ -18,14 +20,14 @@ interface IERC721Receiver {
 contract ProvideLiquidityCustodian is IERC721Receiver {
     IERC20 private token0;
     IERC20 private token1;
+    INonfungiblePositionManager public nonfungiblePositionManager;
 
     int24 private constant MIN_TICK = - 887272;
     int24 private constant MAX_TICK = - MIN_TICK;
     int24 private constant TICK_SPACING = 60;
 
-    INonfungiblePositionManager public nonfungiblePositionManager = INonfungiblePositionManager(0x66C714B1Cb587a5D03Cd2C82249633df0Ff3CC39);
-
-    constructor(address _token0, address _token1) public {
+    constructor(address _nonfungiblePositionManager, address _token0, address _token1) public {
+        nonfungiblePositionManager = INonfungiblePositionManager(_nonfungiblePositionManager);
         token0 = IERC20(_token0);
         token1 = IERC20(_token1);
     }
@@ -54,8 +56,10 @@ contract ProvideLiquidityCustodian is IERC721Receiver {
             token0: address(token0),
             token1: address(token1),
             fee: 3000,
-            tickLower: (MIN_TICK / TICK_SPACING) * TICK_SPACING,
-            tickUpper: (MAX_TICK / TICK_SPACING) * TICK_SPACING,
+//            tickLower: (MIN_TICK / TICK_SPACING) * TICK_SPACING,
+//            tickUpper: (MAX_TICK / TICK_SPACING) * TICK_SPACING,
+            tickLower: TickMath.MIN_TICK,
+            tickUpper: TickMath.MAX_TICK,
             amount0Desired: amount0ToAdd,
             amount1Desired: amount1ToAdd,
             amount0Min: 0,
@@ -68,6 +72,7 @@ contract ProvideLiquidityCustodian is IERC721Receiver {
         (tokenId, liquidity, amount0, amount1) = nonfungiblePositionManager.mint(
             params
         );
+        console.log("after mintNewPosition mint");
 
         if (amount0 < amount0ToAdd) {
             token0.approve(address(nonfungiblePositionManager), 0);

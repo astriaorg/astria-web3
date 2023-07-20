@@ -24,7 +24,8 @@ contract UniswapV3LiquidityTest is Test {
         vm.startPrank(steeze_whale);
         steeze = new GenericERC20("Steeze", "STEEZE", 30 * 1e18);
         burger = new GenericERC20("Burger", "BURGER", 30 * 1e18);
-        uni = new ProvideLiquidityCustodian(address(steeze), address(burger));
+        address nftPositionManager = address(vm.envAddress("NONFUNGIBLE_POSITION_MANAGER_ADDRESS"));
+        uni = new ProvideLiquidityCustodian(nftPositionManager, address(steeze), address(burger));
         steeze.approve(address(uni), 30 * 1e18);
         burger.approve(address(uni), 30 * 1e18);
         vm.stopPrank();
