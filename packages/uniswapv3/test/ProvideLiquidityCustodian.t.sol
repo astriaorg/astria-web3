@@ -22,12 +22,12 @@ contract UniswapV3LiquidityTest is Test {
         steeze_whale = payable(addr);
 
         vm.startPrank(steeze_whale);
-        steeze = new GenericERC20("Steeze", "STEEZE", 30 * 1e18);
-        burger = new GenericERC20("Burger", "BURGER", 30 * 1e18);
+        steeze = new GenericERC20("Steeze", "STEEZE", 30 ether);
+        burger = new GenericERC20("Burger", "BURGER", 30 ether);
         address nftPositionManager = address(vm.envAddress("NONFUNGIBLE_POSITION_MANAGER_ADDRESS"));
         uni = new ProvideLiquidityCustodian(nftPositionManager, address(steeze), address(burger));
-        steeze.approve(address(uni), 30 * 1e18);
-        burger.approve(address(uni), 30 * 1e18);
+        steeze.approve(address(uni), 30 ether);
+        burger.approve(address(uni), 30 ether);
         vm.stopPrank();
     }
 
@@ -36,8 +36,8 @@ contract UniswapV3LiquidityTest is Test {
         uint128 liquidity;
 
         // Mint new position
-        uint steezeAmount = 10 * 1e18;
-        uint burgerAmount = 1e18;
+        uint steezeAmount = 10 ether;
+        uint burgerAmount = 1 ether;
 
         vm.startPrank(steeze_whale);
 

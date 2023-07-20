@@ -2,6 +2,7 @@ default:
   @just --list
 
 set dotenv-load
+set fallback
 
 export RUST_LOG := "debug"
 
@@ -14,14 +15,14 @@ deploy-uniswapv3:
     --slow \
     --skip-simulation -vvvvv --broadcast |& tee deploy-uniswap-$(date +"%m_%d_%Y").log
 
-defaultTotalSupply := "100000"
+defaultTotalSupply := "1000 ether"
 deploy-erc20 tokenName shortTokenName totalSupply=defaultTotalSupply:
   forge create \
     --private-key $PRIVATE_KEY \
     --rpc-url $JSON_RPC \
     --chain-id $CHAIN_ID \
     src/GenericERC20.sol:GenericERC20 \
-    --constructor-args "{{tokenName}}" "{{shortTokenName}}" {{totalSupply}}
+    --constructor-args "{{tokenName}}" "{{shortTokenName}}" "{{totalSupply}}"
 
 deploy-provide-liquidity-custodian:
   forge create \
@@ -30,3 +31,14 @@ deploy-provide-liquidity-custodian:
     --chain-id $CHAIN_ID \
     src/ProvideLiquidityCustodian.sol:ProvideLiquidityCustodian \
     --constructor-args $NONFUNGIBLE_POSITION_MANAGER_ADDRESS $FIRST_TOKEN_ADDRESS $SECOND_TOKEN_ADDRESS
+
+mint-new-position:
+  cast send \
+    --rpc-url $JSON_RPC \
+    --private-key $PRIVATE_KEY \
+    --chain-id $CHAIN_ID \
+    --from $SENDER \
+    $PROVIDE_LIQUIDITY_CUSTODIAN_ADDRESS \
+    "mintNewPosition(uint,uint)(uint,uint128,uint,uint)" \
+    "3 ether" \
+    "1 ether"
