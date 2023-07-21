@@ -25,6 +25,9 @@ For local dev, make sure the [Astria Dev Cluster](https://github.com/astriaorg/d
 Then deploy contracts in the following order:
 
 ### weth9
+
+By default, the `just create-weth9` command will pull environment variables from the .env file. If you have deployed your own rollup in the [dev cluster](https://github.com/astriaorg/dev-cluster), you should replace the arguments in the `just` command with the rollup name and chain id you used for that deployment. 
+
 ```bash
 cd packages/weth9
 cp .env.example .env
