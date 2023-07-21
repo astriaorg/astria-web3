@@ -4,8 +4,6 @@ default:
 set dotenv-load
 set fallback
 
-export RUST_LOG := "debug"
-
 defaultRollupName := ""
 defaultNetworkId  := ""
 defaultPrivateKey := ""
@@ -15,5 +13,4 @@ generate-transactions rollupName=defaultRollupName networkId=defaultNetworkId pr
         --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
         --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
         --chain-id    {{ if networkId  == '' { env_var('CHAIN_ID')    } else { networkId } }} \
-        --slow \
         --broadcast --skip-simulation -vvvvv

@@ -1,0 +1,12 @@
+default:
+  @just --list
+
+set dotenv-load
+set fallback
+
+defaultRollupName := ""
+defaultPrivateKey := ""
+create-weth9 rollupName=defaultRollupName privateKey=defaultPrivateKey:
+    forge create src/Weth9.sol:WETH9 \
+        --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
+        --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} 

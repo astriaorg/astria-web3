@@ -28,10 +28,7 @@ Then deploy contracts in the following order:
 ```bash
 cd packages/weth9
 cp .env.example .env
-dotenv -- bash -c 'RUST_LOG=debug forge create \
-  --private-key $PRIVATE_KEY \
-  --rpc-url $JSON_RPC \
-  src/Weth9.sol:WETH9'
+just create-weth9 <optional-rollupName> <optional-privateKey>
 ```
 
 Upon completion, the following output will be shown (the addresses will be different):
@@ -73,7 +70,7 @@ By default, the `just generate-transactions` command will pull environment varia
 ```bash
 cd packages/evm-test-data
 cp .env.example .env
-just generate-transactions <optional-rollupName> <optional-chainId> <optional-priavteKey>
+just generate-transactions <optional-rollupName> <optional-chainId> <optional-privateKey>
 ```
 
 
