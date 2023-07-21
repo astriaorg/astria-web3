@@ -1,0 +1,16 @@
+default:
+  @just --list
+
+set dotenv-load
+set fallback
+
+defaultRollupName := ""
+defaultNetworkId  := ""
+defaultPrivateKey := ""
+generate-transactions rollupName=defaultRollupName networkId=defaultNetworkId privateKey=defaultPrivateKey:
+    forge script script/DeployAndCallERC20.s.sol:DeployAndCallERC20 \
+        --optimizer-runs 2 \
+        --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
+        --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
+        --chain-id    {{ if networkId  == '' { env_var('CHAIN_ID')    } else { networkId } }} \
+        --broadcast --skip-simulation -vvvvv

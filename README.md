@@ -25,13 +25,13 @@ For local dev, make sure the [Astria Dev Cluster](https://github.com/astriaorg/d
 Then deploy contracts in the following order:
 
 ### weth9
+
+By default, the `just create-weth9` command will pull environment variables from the .env file. If you have deployed your own rollup in the [dev cluster](https://github.com/astriaorg/dev-cluster), you should replace the arguments in the `just` command with the rollup name and chain id you used for that deployment. 
+
 ```bash
 cd packages/weth9
 cp .env.example .env
-dotenv -- bash -c 'RUST_LOG=debug forge create \
-  --private-key $PRIVATE_KEY \
-  --rpc-url $JSON_RPC \
-  src/Weth9.sol:WETH9'
+just create-weth9 <optional-rollupName> <optional-privateKey>
 ```
 
 Upon completion, the following output will be shown (the addresses will be different):
@@ -67,17 +67,16 @@ dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployUniswapV3.s.sol:Depl
   --broadcast --skip-simulation -vvvvv'
 ```
 ### Generate Transactions
+
+By default, the `just generate-transactions` command will pull environment variables from the .env file. If you have deployed your own rollup in the [dev cluster](https://github.com/astriaorg/dev-cluster), you should replace the arguments in the `just` command with the rollup name and chain id you used for that deployment. 
+
 ```bash
 cd packages/evm-test-data
 cp .env.example .env
-dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployAndCallERC20.s.sol:DeployAndCallERC20 \
-  --optimizer-runs 2 \
-  --private-key $PRIVATE_KEY \
-  --rpc-url $JSON_RPC \
-  --chain-id 912559 \
-  --slow \
-  --broadcast --skip-simulation -vvvvv'
+just generate-transactions <optional-rollupName> <optional-chainId> <optional-privateKey>
 ```
+
+
 
 ### Running Forge Tests
 
