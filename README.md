@@ -28,7 +28,7 @@ Then deploy contracts in the following order:
 ```bash
 cd packages/weth9
 cp .env.example .env
-just create-weth9 <optional-rollupName> <optional-priavteKey>
+just create-weth9 <optional-rollupName> <optional-privateKey>
 ```
 
 Upon completion, the following output will be shown (the addresses will be different):
@@ -70,7 +70,7 @@ By default, the `just generate-transactions` command will pull environment varia
 ```bash
 cd packages/evm-test-data
 cp .env.example .env
-just generate-transactions <optional-rollupName> <optional-chainId> <optional-priavteKey>
+just generate-transactions <optional-rollupName> <optional-chainId> <optional-privateKey>
 ```
 
 
