@@ -24,7 +24,7 @@ contract DeployPool is Script {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(privateKey);
 
-        v3CoreFactory = UniswapV3Factory(vm.envAddress("UNI_V3_FACTORY"));
+        v3CoreFactory = UniswapV3Factory(vm.envAddress("UNIV3_FACTORY"));
 
         // DEPLOY POOL
         address poolAddr = v3CoreFactory.getPool(tokenA, tokenB, fee);

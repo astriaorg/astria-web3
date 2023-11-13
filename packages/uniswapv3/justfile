@@ -7,12 +7,15 @@ set fallback
 defaultRollupName := ""
 defaultPrivateKey := ""
 deploy-uniswap-v3 rollupName=defaultRollupName privateKey=defaultPrivateKey:
-  RUST_LOG=debug forge script script/DeployUniswapV3.s.sol:DeployUniswapV3 \
-    --optimizer-runs 2 \
+  FOUNDRY_BYTECODE_HASH=none \
+  forge script script/DeployUniswapV3.s.sol:DeployUniswapV3 \
+    --optimizer-runs 800 \
     --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
     --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
     --slow \
-    --broadcast --skip-simulation -vvvvv
+    --broadcast \
+    --skip-simulation \
+    -vvvvv
 
 defaultTokenA := ""
 defaultTokenB := ""
@@ -23,6 +26,7 @@ deploy-pool tokenA=defaultTokenA tokenB=defaultTokenB fee=defaultFee price=defau
   TOKEN_B_ADDRESS={{ if tokenB == '' { env_var('WETH9_ADDRESS') } else { tokenB } }} \
   FEE={{ if fee == '' { env_var('DEFAULT_FEE') } else { fee } }} \
   PRICE={{ if price == '' { env_var('DEFAULT_PRICE') } else { price } }} \
+  FOUNDRY_BYTECODE_HASH=none \
   forge script script/DeployPool.s.sol:DeployPool \
     --optimizer-runs 2 \
     --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
@@ -38,6 +42,7 @@ create-position tokenA=defaultTokenA tokenB=defaultTokenB tokenAAmount=defaultTo
   FEE={{ if fee == '' { env_var('DEFAULT_FEE') } else { fee } }} \
   TOKEN_A_AMOUNT={{ tokenAAmount }} \
   TOKEN_B_AMOUNT={{ tokenBAmount }} \
+  FOUNDRY_BYTECODE_HASH=none \
   forge script script/CreatePosition.s.sol:CreatePosition \
     --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
     --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
