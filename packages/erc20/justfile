@@ -1,0 +1,16 @@
+default:
+  @just --list
+
+set dotenv-load
+set fallback
+
+defaultTokenName := "Token"
+defaultTokenSymbol := "TKN"
+defaultTokenSupply := "1000000000000000000000000"
+defaultRollupName := ""
+defaultPrivateKey := ""
+create-erc20 tokenName=defaultTokenName tokenSymbol=defaultTokenSymbol tokenSupply=defaultTokenSupply rollupName=defaultRollupName privateKey=defaultPrivateKey:
+    forge create src/CustomizableERC20.sol:CustomizableERC20 \
+        --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
+        --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
+        --constructor-args {{ tokenName }} {{ tokenSymbol }} {{ tokenSupply }}

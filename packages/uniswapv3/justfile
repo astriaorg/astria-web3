@@ -1,0 +1,54 @@
+default:
+  @just --list
+
+set dotenv-load
+set fallback
+
+defaultRollupName := ""
+defaultPrivateKey := ""
+deploy-uniswap-v3 rollupName=defaultRollupName privateKey=defaultPrivateKey:
+  RUST_LOG=debug forge script script/DeployUniswapV3.s.sol:DeployUniswapV3 \
+    --optimizer-runs 2 \
+    --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
+    --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
+    --slow \
+    --broadcast --skip-simulation -vvvvv
+
+defaultTokenA := ""
+defaultTokenB := ""
+defaultFee := ""
+defaultPrice := ""
+deploy-pool tokenA=defaultTokenA tokenB=defaultTokenB fee=defaultFee price=defaultPrice rollupName=defaultRollupName privateKey=defaultPrivateKey:
+  TOKEN_A_ADDRESS={{ if tokenA == '' { env_var('TOKEN_A_ADDRESS') } else { tokenA } }} \
+  TOKEN_B_ADDRESS={{ if tokenB == '' { env_var('WETH9_ADDRESS') } else { tokenB } }} \
+  FEE={{ if fee == '' { env_var('DEFAULT_FEE') } else { fee } }} \
+  PRICE={{ if price == '' { env_var('DEFAULT_PRICE') } else { price } }} \
+  forge script script/DeployPool.s.sol:DeployPool \
+    --optimizer-runs 2 \
+    --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
+    --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
+    --slow \
+    --broadcast --skip-simulation
+
+defaultTokenAAmount := ""
+defaultTokenBAmount := ""
+create-position tokenA=defaultTokenA tokenB=defaultTokenB tokenAAmount=defaultTokenAAmount tokenBAmount=defaultTokenBAmount fee=defaultFee rollupName=defaultRollupName privateKey=defaultPrivateKey:
+  TOKEN_A_ADDRESS={{ if tokenA == '' { env_var('TOKEN_A_ADDRESS') } else { tokenA } }} \
+  TOKEN_B_ADDRESS={{ if tokenB == '' { env_var('WETH9_ADDRESS') } else { tokenB } }} \
+  FEE={{ if fee == '' { env_var('DEFAULT_FEE') } else { fee } }} \
+  TOKEN_A_AMOUNT={{ tokenAAmount }} \
+  TOKEN_B_AMOUNT={{ tokenBAmount }} \
+  forge script script/CreatePosition.s.sol:CreatePosition \
+    --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
+    --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
+    -vvvvv
+
+defaultTokenAmount := ""
+weth9-deposit tokenAmount=defaultTokenAmount rollupName=defaultRollupName privateKey=defaultPrivateKey:
+  TOKEN_AMOUNT={{ tokenAmount }} \
+  forge script script/Weth9Deposit.s.sol:Weth9Deposit \
+    --optimizer-runs 2 \
+    --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
+    --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
+    --slow \
+    --broadcast --skip-simulation -vvvvv
