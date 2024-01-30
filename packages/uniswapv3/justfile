@@ -7,15 +7,12 @@ set fallback
 defaultRollupName := ""
 defaultPrivateKey := ""
 deploy-uniswap-v3 rollupName=defaultRollupName privateKey=defaultPrivateKey:
-  FOUNDRY_BYTECODE_HASH=none \
-  forge script script/DeployUniswapV3.s.sol:DeployUniswapV3 \
-    --optimizer-runs 800 \
-    --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
-    --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
-    --slow \
-    --broadcast \
-    --skip-simulation \
-    -vvvvv
+  node lib/deploy-v3/dist/index.js \
+    --private-key {{ if privateKey == "" { env_var('PRIVATE_KEY') } else { privateKey } }} \
+    --json-rpc {{ if rollupName == "" { env_var('JSON_RPC') } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
+    --weth9-address {{ env_var("WETH9") }} \
+    --native-currency-label RIA \
+    --owner-address `cast wallet address --private-key {{ if privateKey == "" { env_var('PRIVATE_KEY') } else { privateKey } }}`
 
 defaultTokenA := ""
 defaultTokenB := ""
@@ -32,7 +29,8 @@ deploy-pool tokenA=defaultTokenA tokenB=defaultTokenB fee=defaultFee price=defau
     --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
     --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
     --slow \
-    --broadcast --skip-simulation
+    --broadcast \
+    --skip-simulation
 
 defaultTokenAAmount := ""
 defaultTokenBAmount := ""
@@ -44,16 +42,35 @@ create-position tokenA=defaultTokenA tokenB=defaultTokenB tokenAAmount=defaultTo
   TOKEN_B_AMOUNT={{ tokenBAmount }} \
   FOUNDRY_BYTECODE_HASH=none \
   forge script script/CreatePosition.s.sol:CreatePosition \
+    --optimizer-runs 2 \
     --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
     --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
-    -vvvvv
+    --slow \
+    --broadcast \
+    --skip-simulation
+
+swap tokenIn tokenOut amountIn fee=defaultFee rollupName=defaultRollupName privateKey=defaultPrivateKey:
+  TOKEN_IN_ADDRESS={{ tokenIn }} \
+  TOKEN_OUT_ADDRESS={{ tokenOut }} \
+  FEE={{ if fee == '' { env_var('DEFAULT_FEE') } else { fee } }} \
+  TOKEN_IN_AMOUNT={{ amountIn }} \
+  FOUNDRY_BYTECODE_HASH=none \
+  forge script script/Swap.s.sol:Swap \
+    --optimizer-runs 2 \
+    --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
+    --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
+    --slow \
+    --broadcast \
+    --skip-simulation
 
 defaultTokenAmount := ""
 weth9-deposit tokenAmount=defaultTokenAmount rollupName=defaultRollupName privateKey=defaultPrivateKey:
   TOKEN_AMOUNT={{ tokenAmount }} \
+  WETH9_ADDRESS={{ env_var("WETH9") }} \
   forge script script/Weth9Deposit.s.sol:Weth9Deposit \
     --optimizer-runs 2 \
     --private-key {{ if privateKey == '' { env_var('PRIVATE_KEY') } else { privateKey } }} \
     --rpc-url     {{ if rollupName == '' { env_var('JSON_RPC')    } else { replace('http://executor.#.localdev.me', '#', rollupName) } }} \
     --slow \
-    --broadcast --skip-simulation -vvvvv
+    --broadcast \
+    --skip-simulation

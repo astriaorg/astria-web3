@@ -47,3 +47,6 @@
 [submodule "packages/erc20/lib/openzeppelin-contracts"]
 	path = packages/erc20/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "packages/uniswapv3/lib/deploy-v3"]
+	path = packages/uniswapv3/lib/deploy-v3
+	url = https://github.com/Uniswap/deploy-v3.git

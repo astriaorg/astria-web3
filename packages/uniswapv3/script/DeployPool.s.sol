@@ -4,18 +4,16 @@ pragma abicoder v2;
 
 import {UniswapV3Factory} from "@uniswap/v3-core/contracts/UniswapV3Factory.sol";
 import {UniswapV3Pool} from "@uniswap/v3-core/contracts/UniswapV3Pool.sol";
-import {FullMath} from "@uniswap/v3-core/contracts/libraries/FullMath.sol";
 
 import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
-import {Math} from "./Math.sol";
 
 contract DeployPool is Script {
     // Config
     address private tokenA = vm.envAddress("TOKEN_A_ADDRESS");
     address private tokenB = vm.envAddress("TOKEN_B_ADDRESS");
     uint24 private fee = uint24(vm.envUint("FEE"));
-    uint256 private price = vm.envUint("PRICE");
+    uint160 private sqrtPriceX96 = uint160(vm.envUint("PRICE"));
 
     UniswapV3Factory private v3CoreFactory;
     UniswapV3Pool private v3Pool;
@@ -43,25 +41,15 @@ contract DeployPool is Script {
         // INITIALIZE POOL
         v3Pool = UniswapV3Pool(poolAddr);
 
-        (uint160 sqrtPriceX96,,,,,,) = v3Pool.slot0();
+        (uint160 sqrtPriceX96Check,,,,,,) = v3Pool.slot0();
 
-        if (sqrtPriceX96 == 0) {
-            console.log("Initializing pools with price", price);
-
-            sqrtPriceX96 = uint160(Math.sqrt(price) << 96);
-
+        if (sqrtPriceX96Check == 0) {
+            console.log("Initializing pools with price (sqrtPriceX96)", sqrtPriceX96);
             v3Pool.initialize(sqrtPriceX96);
         } else {
-            uint256 calcedPrice = FullMath.mulDiv(uint256(sqrtPriceX96) * uint256(sqrtPriceX96), 1, 1 << 192);
-            console.log("Pool already initialized. Price =", calcedPrice);
+            console.log("Pool already initialized. Price (sqrtPriceX96) =", sqrtPriceX96);
         }
-
-        console.log(msg.sender);
 
         vm.stopBroadcast();
     }
 }
-
-// https://ethereum.stackexchange.com/questions/98685/computing-the-uniswap-v3-pair-price-from-q64-96-number
-// https://www.degencode.com/p/uniswapv3-pool-contract
-// TODO initialize pool with value
