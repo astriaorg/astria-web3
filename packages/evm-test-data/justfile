@@ -4,6 +4,9 @@ default:
 set dotenv-load
 set fallback
 
+copy-env:
+  cp .env.example .env
+
 defaultRollupName := ""
 defaultNetworkId  := ""
 defaultPrivateKey := ""
