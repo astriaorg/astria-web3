@@ -85,7 +85,7 @@ npm run dev:foundry
 This will:
 
 - Start a Next.js dev server,
-- Start the `@wagmi/cli` in [**watch mode**](https://wagmi.sh/cli/commands/generate#options) to listen to changes in our contracts, and instantly generate code,
+- Start the `@wagmi/cli` in [**watch mode**](https://wagmi.sh/cli/api/commands/generate#options) to listen to changes in our contracts, and instantly generate code,
 - Start an Anvil instance (Mainnet Fork) on an RPC URL.
 
 ## Deploy our contract to Anvil
