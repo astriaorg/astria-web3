@@ -4,11 +4,12 @@ This repository contains smart contracts and front end interfaces for the Astria
 
 Make sure you have the following installed:
 
-  * npm
-  * dotenv - `npm install -g dotenv-cli`
-  * [Foundry + Forge](https://book.getfoundry.sh/getting-started/installation)
+- npm
+- dotenv - `npm install -g dotenv-cli`
+- [Foundry + Forge](https://book.getfoundry.sh/getting-started/installation)
 
 Then, clone the repo using the `--recurse-submodules` flag to bring in all the submodules.
+
 ```bash
 git clone --recurse-submodules git@github.com:astriaorg/astria-web3.git
 cd astria-web3
@@ -26,7 +27,7 @@ Then deploy contracts in the following order:
 
 ### weth9
 
-By default, the `just create-weth9` command will pull environment variables from the .env file. If you have deployed your own rollup in the [dev cluster](https://github.com/astriaorg/dev-cluster), you should replace the arguments in the `just` command with the rollup name and chain id you used for that deployment. 
+By default, the `just create-weth9` command will pull environment variables from the .env file. If you have deployed your own rollup in the [dev cluster](https://github.com/astriaorg/dev-cluster), you should replace the arguments in the `just` command with the rollup name and chain id you used for that deployment.
 
 ```bash
 cd packages/weth9
@@ -66,17 +67,17 @@ dotenv -- bash -c 'RUST_LOG=debug forge script script/DeployUniswapV3.s.sol:Depl
   --slow \
   --broadcast --skip-simulation -vvvvv'
 ```
+
 ### Generate Transactions
 
-By default, the `just generate-transactions` command will pull environment variables from the .env file. If you have deployed your own rollup in the [dev cluster](https://github.com/astriaorg/dev-cluster), you should replace the arguments in the `just` command with the rollup name and chain id you used for that deployment. 
+By default, the `just generate-transactions` command will pull environment variables from the .env file. If you have deployed your own rollup in the [dev cluster](https://github.com/astriaorg/dev-cluster), you should replace the arguments in the `just` command with the rollup name and chain id you used for that deployment.
 
 ```bash
 cd packages/evm-test-data
+forge install
 cp .env.example .env
 just generate-transactions <optional-rollupName> <optional-chainId> <optional-privateKey>
 ```
-
-
 
 ### Running Forge Tests
 
